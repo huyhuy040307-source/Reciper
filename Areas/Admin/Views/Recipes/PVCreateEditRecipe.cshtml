@@ -1,0 +1,330 @@
+@model Reciper.Models.recipe
+
+<style>
+    .grid-table {
+        width: 100%;
+        table-layout: fixed;
+        border-collapse: collapse;
+    }
+
+        .grid-table td {
+            width: 33.33%;
+            padding: 12px;
+            vertical-align: top;
+            border: 1px solid #dee2e6;
+            background-color: #fdfbf7;
+        }
+
+        .grid-table .field-label {
+            display: block;
+            font-weight: 600;
+            color: #5c3826;
+            margin-bottom: 6px;
+        }
+
+        .grid-table .form-control {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .grid-table textarea.form-control {
+            height: 100px;
+            resize: vertical;
+        }
+</style>
+
+@Html.ValidationSummary(false, "", new { @class = "text-danger mb-2" })
+@Html.HiddenFor(model => model.created_at)
+
+<table class="table table-bordered grid-table bg-white">
+    <!-- Hàng 1 -->
+    <tr>
+        <td>
+            <label class="field-label">Danh mục <span class="text-danger">*</span></label>
+            @Html.DropDownList("category_id", null, "-- Chọn danh mục --", htmlAttributes: new
+            {
+                @class = "form-control",
+                required = "required",
+                data_msg_required = "Vui lòng chọn danh mục."
+            })
+            @Html.ValidationMessageFor(model => model.category_id, "", new { @class = "text-danger small" })
+        </td>
+        <td>
+            <label class="field-label">Tên công thức <span class="text-danger">*</span></label>
+            @Html.EditorFor(model => model.title, new
+            {
+                htmlAttributes = new
+                {
+                    @class = "form-control",
+                    required = "required",
+                    placeholder = "Nhập tên món ăn...",
+                    data_msg_required = "Tên món ăn không được để trống."
+                }
+            })
+            @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger small" })
+        </td>
+        <td>
+            <label class="field-label">Độ khó <span class="text-danger">*</span></label>
+            @Html.DropDownListFor(model => model.difficulty, new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Dễ", Value = "Dễ" },
+                new SelectListItem { Text = "Trung bình", Value = "Trung bình" },
+                new SelectListItem { Text = "Khó", Value = "Khó" }
+            }, new
+            {
+                @class = "form-control",
+                required = "required",
+                data_msg_required = "Vui lòng chọn độ khó."
+            })
+            @Html.ValidationMessageFor(model => model.difficulty, "", new { @class = "text-danger small" })
+        </td>
+    </tr>
+
+    <!-- Hàng 2 -->
+    <tr>
+        <td>
+            <label class="field-label">Khẩu phần (người) <span class="text-danger">*</span></label>
+            @Html.EditorFor(model => model.servings, new
+            {
+                htmlAttributes = new
+                {
+                    @class = "form-control",
+                    type = "number",
+                    min = "1",
+                    required = "required",
+                    data_msg_required = "Vui lòng nhập khẩu phần.",
+                    data_msg_min = "Khẩu phần phải từ 1 người trở lên."
+                }
+            })
+            @Html.ValidationMessageFor(model => model.servings, "", new { @class = "text-danger small" })
+        </td>
+        <td>
+            <label class="field-label">Chuẩn bị (phút) <span class="text-danger">*</span></label>
+            @Html.EditorFor(model => model.prep_minutes, new
+            {
+                htmlAttributes = new
+                {
+                    @class = "form-control",
+                    type = "number",
+                    min = "0",
+                    required = "required",
+                    data_msg_required = "Vui lòng nhập thời gian chuẩn bị.",
+                    data_msg_min = "Thời gian chuẩn bị không được âm."
+                }
+            })
+            @Html.ValidationMessageFor(model => model.prep_minutes, "", new { @class = "text-danger small" })
+        </td>
+        <td>
+            <label class="field-label">Thời gian nấu (phút) <span class="text-danger">*</span></label>
+            @Html.EditorFor(model => model.cook_minutes, new
+            {
+                htmlAttributes = new
+                {
+                    @class = "form-control",
+                    type = "number",
+                    min = "0",
+                    required = "required",
+                    data_msg_required = "Vui lòng nhập thời gian nấu.",
+                    data_msg_min = "Thời gian nấu không được âm."
+                }
+            })
+            @Html.ValidationMessageFor(model => model.cook_minutes, "", new { @class = "text-danger small" })
+        </td>
+    </tr>
+
+    <!-- Hàng 3 -->
+    <tr>
+        <td>
+            <label class="field-label">Hình ảnh (URL)</label>
+            @Html.EditorFor(model => model.image_url, new { htmlAttributes = new { @class = "form-control", placeholder = "https://..." } })
+            @Html.ValidationMessageFor(model => model.image_url, "", new { @class = "text-danger small" })
+        </td>
+        <td>
+            <label class="field-label">Người tạo</label>
+            @Html.DropDownList("user_id", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.user_id, "", new { @class = "text-danger small" })
+        </td>
+        <td>
+            <label class="field-label">Trạng thái</label>
+            @Html.DropDownListFor(model => model.status, new List<SelectListItem>
+            {
+                new SelectListItem { Text = "Đã xuất bản", Value = "published" },
+                new SelectListItem { Text = "Chưa xuất bản", Value = "draft" }
+            }, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger small" })
+        </td>
+    </tr>
+
+    <!-- Hàng 4: Mô tả -->
+    <tr>
+        <td colspan="3">
+            <label class="field-label">Mô tả món ăn</label>
+            @Html.TextAreaFor(model => model.description, new { @class = "form-control", placeholder = "Nhập mô tả chi tiết món ăn..." })
+            @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger small" })
+        </td>
+    </tr>
+
+    <!-- Hàng 5: Danh sách nguyên liệu cần chuẩn bị -->
+    <tr>
+        <td colspan="3" class="p-3 bg-white">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="field-label text-success m-0" style="font-size: 1.15rem;">🍲 Danh sách nguyên liệu</span>
+                <button type="button" class="btn btn-sm btn-outline-success" onclick="addIngredientRow()">+ Thêm dòng nguyên liệu</button>
+            </div>
+            <table class="table table-sm table-bordered mb-2" id="tblIngredients" style="table-layout: fixed; width: 100%;">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 28%;">Tên nguyên liệu</th>
+                        <th style="width: 12%;">Định lượng</th>
+                        <th style="width: 12%;">Đơn vị tính</th>
+                        <th style="width: 42%;">Ghi chú</th>
+                        <th style="width: 6%; text-align: center;">Xóa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.recipe_ingredients != null && Model.recipe_ingredients.Any())
+                    {
+                        foreach (var ri in Model.recipe_ingredients)
+                        {
+                            <tr>
+                                <td>
+                                    <input type="text" name="ing_name" class="form-control form-control-sm" style="width: 100%;" value="@(ri.ingredient != null ? ri.ingredient.name : "")" placeholder="Ví dụ: Bắp bò, Bún tươi..." />
+                                </td>
+                                <td>
+                                    <input type="text" name="ing_qty" class="form-control form-control-sm" style="width: 100%;" value="@(ri.quantity.HasValue ? ri.quantity.Value.ToString("G29") : "")" placeholder="500" />
+                                </td>
+                                <td>
+                                    <input type="text" name="ing_unit" class="form-control form-control-sm" style="width: 100%;" value="@ri.unit" placeholder="gram, kg, quả..." />
+                                </td>
+                                <td>
+                                    <input type="text" name="ing_note" class="form-control form-control-sm" style="width: 100%;" value="@ri.note" placeholder="Cắt mỏng, băm nhuyễn..." />
+                                </td>
+                                <td class="text-center align-middle">
+                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeRow(this)">✕</button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <small class="text-muted d-block mb-1">Ghi từng nguyên liệu vào các dòng trên. Nhấn <strong>+ Thêm dòng nguyên liệu</strong> để thêm dòng mới.</small>
+        </td>
+    </tr>
+
+    <!-- Hàng 6: Các bước thực hiện nấu ăn -->
+    <tr>
+        <td colspan="3" class="p-3 bg-white">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="field-label text-success m-0" style="font-size: 1.15rem;">🍳 Các bước chế biến / nấu ăn</span>
+                <button type="button" class="btn btn-sm btn-outline-primary" onclick="addStepRow()">+ Thêm bước làm</button>
+            </div>
+            <table class="table table-sm table-bordered mb-2" id="tblSteps" style="table-layout: fixed; width: 100%;">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 8%; text-align: center;">Bước</th>
+                        <th style="width: 86%;">Hướng dẫn thực hiện</th>
+                        <th style="width: 6%; text-align: center;">Xóa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.steps != null && Model.steps.Any())
+                    {
+                        int sIndex = 1;
+                        foreach (var st in Model.steps.OrderBy(s => s.step_number))
+                        {
+                            <tr>
+                                <td class="text-center align-middle font-weight-bold step-num">@sIndex</td>
+                                <td>
+                                    <textarea name="step_instruction" class="form-control form-control-sm" style="width: 100%;" rows="2" placeholder="Nhập hướng dẫn thực hiện cho bước này...">@st.instruction</textarea>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeStepRow(this)">✕</button>
+                                </td>
+                            </tr>
+                            sIndex++;
+                        }
+                    }
+                </tbody>
+            </table>
+            <small class="text-muted d-block mb-1">Ghi từng bước nấu ăn theo thứ tự. Nhấn <strong>+ Thêm bước làm</strong> để thêm bước tiếp theo.</small>
+        </td>
+    </tr>
+
+    <!-- Hàng 7: Nút thao tác -->
+    <tr>
+        <td colspan="3" class="bg-light">
+            <input type="submit" value="Lưu dữ liệu" class="btn btn-primary" />
+            @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-outline-secondary ms-2" })
+        </td>
+    </tr>
+</table>
+
+<script>
+    function addIngredientRow(name, qty, unit, note) {
+        name = name || '';
+        qty = qty || '';
+        unit = unit || '';
+        note = note || '';
+        var tbody = document.querySelector('#tblIngredients tbody');
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td><input type="text" name="ing_name" class="form-control form-control-sm" style="width: 100%;" value="' + name + '" placeholder="Ví dụ: Bắp bò, Bún tươi..." /></td>' +
+                       '<td><input type="text" name="ing_qty" class="form-control form-control-sm" style="width: 100%;" value="' + qty + '" placeholder="500" /></td>' +
+                       '<td><input type="text" name="ing_unit" class="form-control form-control-sm" style="width: 100%;" value="' + unit + '" placeholder="gram, kg, quả..." /></td>' +
+                       '<td><input type="text" name="ing_note" class="form-control form-control-sm" style="width: 100%;" value="' + note + '" placeholder="Cắt mỏng, băm nhuyễn..." /></td>' +
+                       '<td class="text-center align-middle"><button type="button" class="btn btn-sm btn-outline-danger" onclick="removeRow(this)">✕</button></td>';
+        tbody.appendChild(tr);
+    }
+
+    function removeRow(btn) {
+        var row = btn.closest('tr');
+        row.remove();
+    }
+
+    function addStepRow(instruction) {
+        instruction = instruction || '';
+        var tbody = document.querySelector('#tblSteps tbody');
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td class="text-center align-middle font-weight-bold step-num"></td>' +
+                       '<td><textarea name="step_instruction" class="form-control form-control-sm" style="width: 100%;" rows="2" placeholder="Nhập hướng dẫn thực hiện cho bước này...">' + instruction + '</textarea></td>' +
+                       '<td class="text-center align-middle"><button type="button" class="btn btn-sm btn-outline-danger" onclick="removeStepRow(this)">✕</button></td>';
+        tbody.appendChild(tr);
+        reNumberSteps();
+    }
+
+    function removeStepRow(btn) {
+        var row = btn.closest('tr');
+        row.remove();
+        reNumberSteps();
+    }
+
+    function reNumberSteps() {
+        var cells = document.querySelectorAll('#tblSteps .step-num');
+        cells.forEach(function (td, idx) {
+            td.innerText = (idx + 1);
+        });
+    }
+
+    function initRecipeRows() {
+        var ingRows = document.querySelectorAll('#tblIngredients tbody tr');
+        if (ingRows.length === 0) {
+            addIngredientRow();
+            addIngredientRow();
+            addIngredientRow();
+        }
+
+        var stepRows = document.querySelectorAll('#tblSteps tbody tr');
+        if (stepRows.length === 0) {
+            addStepRow();
+            addStepRow();
+        } else {
+            reNumberSteps();
+        }
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initRecipeRows);
+    } else {
+        initRecipeRows();
+    }
+</script>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - QUẢN LÝ WEBSITE</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <style>
+        :root {
+            --kitchen-dark: #3b2a22;
+            --kitchen-espresso: #2a1c15;
+            --kitchen-warm: #b86b43;
+            --kitchen-warm-hover: #cf7e54;
+            --kitchen-bg: #fcf9f5;
+            --kitchen-border: #ede4d8;
+            --kitchen-text: #3c322b;
+            --kitchen-muted: #786c62;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            background-color: var(--kitchen-bg);
+            color: var(--kitchen-text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar-kitchen {
+            background-color: var(--kitchen-dark) !important;
+            border-bottom: 2px solid var(--kitchen-warm);
+            padding: 0.75rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+            .navbar-kitchen .navbar-brand {
+                color: #ffffff !important;
+                font-weight: 700;
+                letter-spacing: 0.5px;
+                font-size: 1.25rem;
+            }
+
+                .navbar-kitchen .navbar-brand span {
+                    color: #e8a87c;
+                    font-weight: 400;
+                    font-size: 0.9rem;
+                    margin-left: 4px;
+                }
+
+            .navbar-kitchen .nav-link {
+                color: #ede2d8 !important;
+                font-weight: 500;
+                font-size: 0.95rem;
+                padding: 0.5rem 0.9rem !important;
+                border-radius: 6px;
+                transition: all 0.2s ease;
+            }
+
+                .navbar-kitchen .nav-link:hover,
+                .navbar-kitchen .nav-link:focus {
+                    color: #ffffff !important;
+                    background-color: rgba(255, 255, 255, 0.08);
+                }
+
+                .navbar-kitchen .nav-link.active-auth {
+                    color: #f7d6bf !important;
+                }
+
+        .body-content {
+            flex: 1 0 auto;
+            padding-top: 1.5rem;
+            padding-bottom: 2.5rem;
+        }
+
+        .footer-kitchen {
+            flex-shrink: 0;
+            background-color: var(--kitchen-espresso);
+            color: #d8cec4;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 30px 0 20px 0;
+            font-size: 0.9rem;
+        }
+
+            .footer-kitchen h6 {
+                color: #ffffff;
+                font-weight: 600;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                font-size: 0.85rem;
+                margin-bottom: 12px;
+            }
+
+            .footer-kitchen .team-tag {
+                display: inline-block;
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                color: #ede2d8;
+                padding: 4px 12px;
+                border-radius: 6px;
+                margin: 3px 2px;
+                font-size: 0.85rem;
+            }
+
+            .footer-kitchen .copyright {
+                color: #9c8e82;
+                font-size: 0.82rem;
+                border-top: 1px solid rgba(255, 255, 255, 0.06);
+                margin-top: 20px;
+                padding-top: 15px;
+            }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark navbar-kitchen">
+        <div class="container">
+            <a class="navbar-brand" href="@Url.Action("Index", "Home", new { area = "Admin" })">
+                RECIPER <span>ADMIN</span>
+            </a>
+
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#adminNavbar"
+                    title="Toggle navigation" aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="adminNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        @Html.ActionLink("Trang chủ", "Index", "Home", new { area = "Admin" }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Danh mục", "Index", "Categories", new { area = "Admin" }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Công thức", "Index", "Recipes", new { area = "Admin" }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Tài khoản", "Index", "Users", new { area = "Admin" }, new { @class = "nav-link" })
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav">
+                    @if (Session["Username"] == null)
+                    {
+                        <li class="nav-item">
+                            @Html.ActionLink("Đăng nhập", "Login", "Account", new { area = "" }, new { @class = "nav-link active-auth" })
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            @Html.ActionLink("Xin chào " + Session["Username"] + " (Đăng xuất)", "Logout", "Account", new { area = "" }, new { @class = "nav-link active-auth" })
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+    <footer class="footer-kitchen">
+        <div class="container">
+            <div class="row gy-3">
+                <div class="col-md-6">
+                    <h6>Quản lý Công thức Nấu ăn (Reciper)</h6>
+                    <p class="small mb-0" style="color: #b0a498 !important; max-width: 420px; line-height: 1.6;">
+                        Hệ thống quản trị nội dung, danh mục và kết nối cộng đồng chia sẻ bí quyết ẩm thực gia đình.
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h6>Nhóm thực hiện (CTNA)</h6>
+                    <div>
+                        <span class="team-tag">Quân</span>
+                        <span class="team-tag">Huy</span>
+                        <span class="team-tag">Long</span>
+                        <span class="team-tag">Khang</span>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright text-center">
+                &copy; @DateTime.Now.Year Reciper - Quản lý Công thức Nấu ăn.
+            </div>
+        </div>
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,89 @@
+﻿@model Reciper.Models.ViewModel.HomeRecipeVM
+
+@{
+    ViewBag.Title = "Trang chủ - Khám phá công thức nấu ăn";
+    <link href="~/Content/myStyle/CustomerHome.css" rel="stylesheet" />
+}
+
+<style>
+    /* Điều chỉnh style banner và card công thức cho chủ đề ẩm thực */
+    .banner {
+        background: linear-gradient(rgba(44, 62, 80, 0.75), rgba(44, 62, 80, 0.75)), url('https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1200&q=80');
+        background-size: cover;
+        background-position: center;
+        border-radius: 8px;
+        margin-bottom: 25px;
+    }
+    .fproduct-item, .lproduct-item {
+        background: #fff;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .fproduct-item:hover, .lproduct-item:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+    }
+    .badge-diff {
+        display: inline-block;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+    .badge-time {
+        display: inline-block;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        background-color: #fff3e0;
+        color: #e65100;
+    }
+</style>
+
+@* PHẦN BANNER *@
+<section class="container-fluid banner">
+    <div class="banner-container py-5">
+        <h2 class="fw-bold">RECIPER - BẾP CỦA MỌI NHÀ</h2>
+        <p class="fs-5">Khám phá hàng ngàn công thức nấu ăn ngon, đơn giản và chuẩn vị mỗi ngày</p>
+        <a href="#danh-sach-cong-thuc" class="btn btnBanner rounded-pill shadow">Bắt đầu khám phá</a>
+    </div>
+</section>
+
+@* PHẦN TÌM KIẾM CÔNG THỨC *@
+<section class="container-fluid searchProd mb-4">
+    <h2 class="fw-bold text-success">Tìm kiếm công thức nấu ăn</h2>
+    @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+    {
+        <div class="form-group search-container flex-wrap gap-2">
+            @Html.TextBoxFor(m => m.SearchTerm, new
+            {
+                @class = "search-input",
+                placeholder = "Nhập tên món ăn, nguyên liệu, độ khó..."
+            })
+
+            <select name="categoryId" class="form-select" style="width: auto; max-width: 220px; display: inline-block; padding: 10px; border-radius: 5px;">
+                <option value="">-- Tất cả danh mục --</option>
+                @if (Model.Categories != null)
+                {
+                    foreach (var c in Model.Categories)
+                    {
+                        <option value="@c.id" @(Model.CategoryId == c.id ? "selected" : "")>@c.name</option>
+                    }
+                }
+            </select>
+
+            <button type="submit" class="search-button">Tìm kiếm</button>
+        </div>
+    }
+</section>
+
+<hr />
+
+@* PHẦN CÔNG THỨC NỔI BẬT *@
+@Html.Partial("_PVFeatureRecipe", Model)
+
+@* PHẦN CÔNG THỨC MỚI NHẤT *@
+<div id="danh-sach-cong-thuc">
+    @Html.Partial("_PVNewRecipe", Model)
+</div>

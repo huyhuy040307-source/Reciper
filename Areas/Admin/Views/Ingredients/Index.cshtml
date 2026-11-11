@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Reciper.Models.ingredient>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="bg-success container-fluid">DANH SÁCH NGUYÊN LIỆU</h2>
+
+<table class="table bg-info container-fluid">
+    <tr>
+        <th class="bg-success col-md-4">
+            TÊN NGUYÊN LIỆU
+        </th>
+        <th class="bg-success col-md-2"></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.name)
+        </td>
+        <td>
+            @Html.ActionLink("Cập nhật", "Edit", new { id = item.id }, new { @class = "btn btn-primary btn-sm" })
+            @Html.ActionLink("Chi tiết", "Details", new { id = item.id }, new { @class = "btn btn-primary btn-sm" })
+            @Html.ActionLink("Xóa", "Delete", new { id = item.id }, new { @class = "btn btn-primary btn-sm" })
+        </td>
+    </tr>
+}
+
+</table>
+<p>
+    @Html.ActionLink("Thêm mới", "Create", null, new { @class = "btn btn-primary" })
+</p>
+

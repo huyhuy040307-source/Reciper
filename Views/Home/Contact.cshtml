@@ -1,0 +1,39 @@
+@{
+    ViewBag.Title = "Liên hệ";
+}
+
+<div class="container py-4">
+    <h2 class="fw-bold text-success mb-3">Thông Tin Liên Hệ</h2>
+    <div class="row g-4 mt-2">
+        <div class="col-md-6">
+            <div class="card p-4 border-0 shadow-sm h-100">
+                <h5 class="fw-bold text-dark">Nhóm Công Thức Nấu Ăn (Reciper)</h5>
+                <p class="text-muted">Đồ án môn học Phát triển ứng dụng Web</p>
+                <hr />
+                <p>📍 <strong>Địa chỉ:</strong> Trường Đại học Công nghệ TP.HCM (HUTECH)</p>
+                <p>📧 <strong>Email:</strong> reciper.kitchen@gmail.com</p>
+                <p>👥 <strong>Thành viên nhóm:</strong> Quân • Huy • Long • Khang</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-4 border-0 shadow-sm h-100">
+                <h5 class="fw-bold text-dark">Góp Ý & Phản Hồi</h5>
+                <form onsubmit="alert('Cảm ơn bạn đã gửi phản hồi!'); return false;">
+                    <div class="mb-3">
+                        <label class="form-label">Họ tên của bạn</label>
+                        <input type="text" class="form-control" required placeholder="Nhập họ tên" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" required placeholder="name@example.com" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Nội dung góp ý</label>
+                        <textarea class="form-control" rows="3" required placeholder="Nhập ý kiến đóng góp..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Gửi phản hồi</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

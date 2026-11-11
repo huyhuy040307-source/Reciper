@@ -1,0 +1,18 @@
+﻿@model Reciper.Models.ingredient
+
+<table class="table table-bordered">
+    <tr>
+        <th class="bg-success text-white col-md-3 align-middle">Tên nguyên liệu</th>
+        <td class="col-md-9">
+            @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+        </td>
+    </tr>
+    <tr>
+        <th class="bg-success"></th>
+        <td>
+            <input type="submit" value="Lưu" class="btn btn-primary" />
+            @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-secondary" })
+        </td>
+    </tr>
+</table>

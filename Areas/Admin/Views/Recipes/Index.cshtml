@@ -1,0 +1,70 @@
+﻿@model Reciper.Models.ViewModel.RecipeSearchVM
+@{
+    ViewBag.Title = "Search Recipe";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Search</title>
+    <style>
+        .search-container, .order-container {
+            padding-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Form tìm kiếm -->
+    @using (Html.BeginForm("Index", "Recipes", FormMethod.Get))
+    {
+        <div class="form-group search-container">
+            @Html.TextBoxFor(m => m.SearchTerm, new
+            {
+                @class = "form-control",
+                placeholder = "Nhập tên, mô tả, độ khó hoặc danh mục công thức"
+            })
+
+            @* Bổ sung thêm trường tìm kiếm theo khoảng thời gian nấu *@
+            @Html.TextBoxFor(m => m.MinCookMinutes, new
+            {
+                @class = "form-control",
+                placeholder = "Thời gian nấu tối thiểu (phút)",
+                type = "number"
+            })
+
+            @Html.TextBoxFor(m => m.MaxCookMinutes, new
+            {
+                @class = "form-control",
+                placeholder = "Thời gian nấu tối đa (phút)",
+                type = "number"
+            })
+
+            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+        </div>
+        <!-- Tùy chọn sắp xếp -->
+        <div class="form-group order-container">
+            Sắp xếp theo:
+            @Html.ActionLink("Tên tăng dần", "Index",
+                new { sortOrder = "name_asc", searchTerm = Model.SearchTerm, minCookMinutes = Model.MinCookMinutes, maxCookMinutes = Model.MaxCookMinutes })
+            |
+            @Html.ActionLink("Tên giảm dần", "Index",
+                new { sortOrder = "name_desc", searchTerm = Model.SearchTerm, minCookMinutes = Model.MinCookMinutes, maxCookMinutes = Model.MaxCookMinutes })
+            |
+            @Html.ActionLink("Thời gian nấu tăng dần", "Index",
+                new { sortOrder = "time_asc", searchTerm = Model.SearchTerm, minCookMinutes = Model.MinCookMinutes, maxCookMinutes = Model.MaxCookMinutes })
+            |
+            @Html.ActionLink("Thời gian nấu giảm dần", "Index",
+                new { sortOrder = "time_desc", searchTerm = Model.SearchTerm, minCookMinutes = Model.MinCookMinutes, maxCookMinutes = Model.MaxCookMinutes })
+        </div>
+    }
+
+    <!-- Kết quả tìm kiếm -->
+    @Html.Partial("RecipeListPV", Model)
+</body>
+</html>
+

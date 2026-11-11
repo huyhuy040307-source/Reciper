@@ -1,0 +1,39 @@
+@model Reciper.Models.ViewModel.RecipeDetailsVM
+
+<link href="~/Content/myStyle/CustomerHome.css" rel="stylesheet" />
+
+<!-- Hiển thị danh sách món ăn tương tự cùng danh mục -->
+@if (Model.RelatedRecipes != null && Model.RelatedRecipes.Any())
+{
+    <section class="container-fluid featureProd mt-3">
+        <h5 class="fw-bold text-success border-bottom pb-2">Món ăn cùng danh mục</h5>
+        <ul class="feature-container list-unstyled p-0">
+            @foreach (var rec in Model.RelatedRecipes)
+            {
+                <li class="fproduct-item">
+                    <div>
+                        <a href="@Url.Action("RecipeDetails", "Home", new { id = rec.id })">
+                            @if (!string.IsNullOrWhiteSpace(rec.image_url))
+                            {
+                                <img src="@rec.image_url" alt="@rec.title" onerror="this.src='https://via.placeholder.com/300x200?text=Reciper'" />
+                            }
+                            else
+                            {
+                                <img src="https://via.placeholder.com/300x200?text=Reciper" alt="@rec.title" />
+                            }
+                        </a>
+                    </div>
+                    <div class="p-2">
+                        <h6 class="mb-1 text-truncate">
+                            <a href="@Url.Action("RecipeDetails", "Home", new { id = rec.id })" class="text-decoration-none text-dark">
+                                @rec.title
+                            </a>
+                        </h6>
+                        <small class="text-muted">TG nấu: @rec.cook_minutes phút</small>
+                    </div>
+                </li>
+            }
+        </ul>
+    </section>
+}
+

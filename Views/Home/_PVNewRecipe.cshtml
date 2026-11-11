@@ -1,0 +1,63 @@
+@model Reciper.Models.ViewModel.HomeRecipeVM
+@using PagedList.Mvc;
+
+<link rel="stylesheet" type="text/css" href="~/Content/myStyle/CustomerHome.css" />
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<!-- Hiển thị danh sách công thức mới nhất -->
+@if (Model.NewRecipes != null && Model.NewRecipes.Any())
+{
+    <section class="container-fluid listProduct">
+        <h2 class="text-success fw-bold">Công thức mới nhất</h2>
+        <ul class="list-container">
+            @foreach (var item in Model.NewRecipes)
+            {
+                <li class="lproduct-item">
+                    <div>
+                        <a href="@Url.Action("RecipeDetails", "Home", new { id = item.id })">
+                            @if (!string.IsNullOrWhiteSpace(item.image_url))
+                            {
+                                <img src="@item.image_url" alt="@item.title" onerror="this.src='https://via.placeholder.com/300x200?text=Reciper'" />
+                            }
+                            else
+                            {
+                                <img src="https://via.placeholder.com/300x200?text=Reciper" alt="@item.title" />
+                            }
+                        </a>
+                    </div>
+                    <div class="p-2">
+                        <p class="prodName mb-1">
+                            <a href="@Url.Action("RecipeDetails", "Home", new { id = item.id })" class="text-decoration-none text-dark">
+                                @item.title
+                            </a>
+                        </p>
+                        <p class="prodCate mb-1 text-muted small">
+                            Danh mục: @(item.category != null ? item.category.name : "Khác")
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="badge-time">TG nấu: @item.cook_minutes phút</span>
+                            <span class="badge-diff">@item.difficulty</span>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    </section>
+
+    <!-- Hiển thị phân trang -->
+    <div class="pagination-container text-center mt-4">
+        @Html.PagedListPager(Model.NewRecipes, page => Url.Action("Index", new
+        {
+            page,
+            searchTerm = Model.SearchTerm,
+            categoryId = Model.CategoryId
+        }))
+    </div>
+}
+else
+{
+    <div class="alert alert-warning text-center my-4">
+        Không tìm thấy công thức món ăn nào phù hợp với từ khóa của bạn.
+    </div>
+}
+

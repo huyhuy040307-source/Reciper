@@ -1,0 +1,50 @@
+@model Reciper.Models.ViewModel.RecipeDetailsVM
+@using PagedList.Mvc;
+
+<link href="~/Content/myStyle/CustomerHome.css" rel="stylesheet" />
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<!-- Hiển thị danh sách món ăn khác -->
+@if (Model.TopRecipes != null && Model.TopRecipes.Any())
+{
+    <section class="container-fluid listProduct">
+        <h4 style="font-weight:bold;">Gợi ý món ăn khác</h4>
+        <ul class="list-container" style="grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));">
+            @foreach (var rec in Model.TopRecipes)
+            {
+                <li class="lproduct-item">
+                    <div>
+                        <a href="@Url.Action("RecipeDetails", "Home", new { id = rec.id })">
+                            @if (!string.IsNullOrWhiteSpace(rec.image_url))
+                            {
+                                <img src="@rec.image_url" alt="@rec.title" onerror="this.src='https://via.placeholder.com/150x120?text=Reciper'" />
+                            }
+                            else
+                            {
+                                <img src="https://via.placeholder.com/150x120?text=Reciper" alt="@rec.title" />
+                            }
+                        </a>
+                    </div>
+                    <div style="padding: 5px;">
+                        <h6 style="font-size: 0.9rem; margin-bottom: 2px;">
+                            <a href="@Url.Action("RecipeDetails", "Home", new { id = rec.id })" style="text-decoration: none; color: black;">
+                                @rec.title
+                            </a>
+                        </h6>
+                        <small style="color: dimgray;">@rec.cook_minutes phút</small>
+                    </div>
+                </li>
+            }
+        </ul>
+    </section>
+
+    <!-- Hiển thị phân trang -->
+    <div class="pagination-container text-center mt-2">
+        @Html.PagedListPager(Model.TopRecipes, page => Url.Action("RecipeDetails", new
+        {
+            id = Model.Recipe.id,
+            servings = Model.Servings,
+            page
+        }))
+    </div>
+}

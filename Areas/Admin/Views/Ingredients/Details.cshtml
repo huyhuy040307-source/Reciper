@@ -1,0 +1,21 @@
+﻿@model Reciper.Models.ingredient
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="bg-success">THÔNG TIN CHI TIẾT NGUYÊN LIỆU</h2>
+
+<div>
+    <hr />
+    <dl class="dropdown-menu-left">
+        <dt>Tên nguyên liệu</dt>
+        <dd>@Html.DisplayFor(model => model.name)</dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Cập nhật", "Edit", new { id = Model.id }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-primary" })
+</p>
+

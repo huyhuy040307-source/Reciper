@@ -1,0 +1,57 @@
+﻿@model Reciper.Models.user
+
+@{
+    ViewBag.Title = "Đăng ký thành viên";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-3">
+    <h4 class="fw-bold mb-3">ĐĂNG KÝ THÀNH VIÊN</h4>
+    <hr />
+
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger py-2">@ViewBag.Error</div>
+        }
+
+        <div class="mb-3 row">
+            <label class="col-md-2 fw-semibold">Tên đăng nhập</label>
+            <div class="col-md-5">
+                @Html.EditorFor(m => m.username, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-md-2 fw-semibold">Họ tên</label>
+            <div class="col-md-5">
+                @Html.EditorFor(m => m.full_name, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-md-2 fw-semibold">Email</label>
+            <div class="col-md-5">
+                @Html.EditorFor(m => m.email, new { htmlAttributes = new { @class = "form-control", type = "email", required = "required" } })
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label class="col-md-2 fw-semibold">Mật khẩu</label>
+            <div class="col-md-5">
+                @Html.PasswordFor(m => m.password_hash, new { @class = "form-control", required = "required" })
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-offset-2 col-md-5">
+                <input type="submit" value="Đăng ký" class="btn btn-primary" />
+                @Html.ActionLink("Quay lại đăng nhập", "Login", "Account", null, new { @class = "btn btn-outline-secondary ms-2" })
+            </div>
+        </div>
+    }
+</div>
+

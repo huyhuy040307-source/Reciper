@@ -1,0 +1,80 @@
+@model IEnumerable<Reciper.Models.user>
+
+@{
+    ViewBag.Title = "Quản lý tài khoản";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="bg-success text-white p-2">DANH SÁCH TÀI KHOẢN</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+    </div>
+}
+
+<div class="row mb-3 mt-3">
+    <div class="col-md-6">
+        @using (Html.BeginForm("Index", "Users", FormMethod.Get, new { @class = "d-flex gap-2" }))
+        {
+            <input type="text" name="searchTerm" class="form-control" placeholder="Tìm theo tên đăng nhập, họ tên, email..." value="@ViewBag.SearchTerm" />
+            <button type="submit" class="btn btn-primary text-nowrap">Tìm kiếm</button>
+            if (!string.IsNullOrEmpty(ViewBag.SearchTerm as string))
+            {
+                <a href="@Url.Action("Index", "Users")" class="btn btn-outline-secondary text-nowrap">Xóa tìm</a>
+            }
+        }
+    </div>
+    <div class="col-md-6 text-md-end mt-2 mt-md-0">
+        @Html.ActionLink("+ Thêm tài khoản mới", "Create", null, new { @class = "btn btn-primary" })
+    </div>
+</div>
+
+<table class="table table-bordered table-striped table-hover align-middle">
+    <thead class="bg-success text-white">
+        <tr>
+            <th style="width: 5%;">ID</th>
+            <th style="width: 20%;">Tên đăng nhập</th>
+            <th style="width: 25%;">Họ tên</th>
+            <th style="width: 25%;">Email</th>
+            <th style="width: 10%;" class="text-center">Vai trò</th>
+            <th style="width: 15%;" class="text-center">Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.id</td>
+                    <td class="fw-semibold">@Html.DisplayFor(modelItem => item.username)</td>
+                    <td>@Html.DisplayFor(modelItem => item.full_name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.email)</td>
+                    <td class="text-center">
+                        @if (string.Equals(item.role, "Admin", StringComparison.OrdinalIgnoreCase))
+                        {
+                            <span class="badge bg-danger">Admin</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-info text-dark">User</span>
+                        }
+                    </td>
+                    <td class="text-center">
+                        @Html.ActionLink("Sửa", "Edit", new { id = item.id }, new { @class = "btn btn-primary btn-sm" })
+                        @Html.ActionLink("Chi tiết", "Details", new { id = item.id }, new { @class = "btn btn-info btn-sm text-white" })
+                        @Html.ActionLink("Xóa", "Delete", new { id = item.id }, new { @class = "btn btn-danger btn-sm" })
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6" class="text-center text-muted py-4">Không tìm thấy tài khoản nào.</td>
+            </tr>
+        }
+    </tbody>
+</table>

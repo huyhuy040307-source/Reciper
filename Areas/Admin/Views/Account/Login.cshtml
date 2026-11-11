@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "Đăng nhập";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container py-3">
+    <h3 class="fw-bold mb-3">ĐĂNG NHẬP ADMIN</h3>
+    <hr />
+
+    @using (Html.BeginForm("Login", "Account", new { area = "Admin" }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger py-2">@ViewBag.Error</div>
+            }
+
+            <div class="form-group row mb-3">
+                <label class="control-label col-md-2 fw-semibold">Tên đăng nhập</label>
+                <div class="col-md-6">
+                    <input type="text" name="username" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="form-group row mb-3">
+                <label class="control-label col-md-2 fw-semibold">Mật khẩu</label>
+                <div class="col-md-6">
+                    <input type="password" name="password" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="form-group row mt-4">
+                <div class="col-md-offset-2 col-md-6">
+                    <input type="submit" value="Đăng nhập" class="btn btn-primary" />
+                    @Html.ActionLink("Chưa có tài khoản? Đăng ký ngay", "Register", "Account", new { area = "Admin" }, new { @class = "btn btn-outline-secondary ms-2" })
+                </div>
+            </div>
+        </div>
+    }
+</div>

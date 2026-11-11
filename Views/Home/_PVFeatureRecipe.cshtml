@@ -1,0 +1,46 @@
+@model Reciper.Models.ViewModel.HomeRecipeVM
+
+<link rel="stylesheet" type="text/css" href="~/Content/myStyle/CustomerHome.css" />
+
+<!-- Hiển thị danh sách công thức nổi bật -->
+@if (Model.FeaturedRecipes != null && Model.FeaturedRecipes.Any())
+{
+    <section class="container-fluid featureProd">
+        <h2 class="text-success fw-bold">Món ngon nổi bật</h2>
+        <div class="feature-container">
+            @foreach (var item in Model.FeaturedRecipes)
+            {
+                <div class="fproduct-item">
+                    <div>
+                        <a href="@Url.Action("RecipeDetails", "Home", new { id = item.id })">
+                            @if (!string.IsNullOrWhiteSpace(item.image_url))
+                            {
+                                <img src="@item.image_url" alt="@item.title" onerror="this.src='https://via.placeholder.com/300x200?text=Reciper'" />
+                            }
+                            else
+                            {
+                                <img src="https://via.placeholder.com/300x200?text=Reciper" alt="@item.title" />
+                            }
+                        </a>
+                    </div>
+                    <div class="p-2">
+                        <p class="prodName mb-1">
+                            <a href="@Url.Action("RecipeDetails", "Home", new { id = item.id })" class="text-decoration-none text-dark">
+                                @item.title
+                            </a>
+                        </p>
+                        <p class="prodCate mb-1 text-muted small">
+                            Danh mục: @(item.category != null ? item.category.name : "Khác")
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <span class="badge-time">@item.cook_minutes phút</span>
+                            <span class="badge-diff">@item.difficulty</span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+    <hr />
+}
+

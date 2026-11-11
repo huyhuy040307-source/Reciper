@@ -1,0 +1,33 @@
+﻿@model Reciper.Models.category
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="bg-success">XÓA DANH MỤC</h2>
+
+<h3 class="bg-danger">Bạn có chắc muốn xóa danh mục này không?</h3>
+<div>
+    <hr />
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="control-label col-md-2">Tên danh mục</div>
+                <div class="col-md-10">
+                    @Html.DisplayFor(model => model.name)
+                </div>
+
+                <div class="col-md-offset-2 col-md-10">
+                    <div class="form-actions no-color">
+                        <input type="submit" value="Xóa" class="btn btn-primary" />
+                        @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-primary btn-sm" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

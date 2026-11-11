@@ -1,0 +1,143 @@
+@model Reciper.Models.recipe
+
+<head>
+    <style>
+        .info-grid-table {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+        .info-grid-table td {
+            width: 33.33%;
+            padding: 12px;
+            vertical-align: top;
+            border: 1px solid #dee2e6;
+            background-color: #f8f9fa;
+        }
+        .info-grid-table .field-label {
+            display: block;
+            font-weight: 600;
+            color: #198754;
+            margin-bottom: 4px;
+        }
+        .info-grid-table img {
+            height: 120px;
+            max-width: 150px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<table class="table table-bordered info-grid-table">
+    <!-- Hàng 1: 3 cột ngang -->
+    <tr>
+        <td>
+            <span class="field-label">Danh mục</span>
+            <div>@Html.DisplayFor(model => model.category.name)</div>
+        </td>
+        <td>
+            <span class="field-label">Tên công thức</span>
+            <div>@Html.DisplayFor(model => model.title)</div>
+        </td>
+        <td>
+            <span class="field-label">Độ khó</span>
+            <div>@Html.DisplayFor(model => model.difficulty)</div>
+        </td>
+    </tr>
+
+    <!-- Hàng 2: 3 cột ngang -->
+    <tr>
+        <td>
+            <span class="field-label">Khẩu phần</span>
+            <div>@Html.DisplayFor(model => model.servings) người</div>
+        </td>
+        <td>
+            <span class="field-label">Thời gian chuẩn bị</span>
+            <div>@Html.DisplayFor(model => model.prep_minutes) phút</div>
+        </td>
+        <td>
+            <span class="field-label">Thời gian nấu</span>
+            <div>@Html.DisplayFor(model => model.cook_minutes) phút</div>
+        </td>
+    </tr>
+
+    <!-- Hàng 3: 3 cột ngang -->
+    <tr>
+        <td>
+            <span class="field-label">Hình ảnh</span>
+            <div>
+                @if (!string.IsNullOrWhiteSpace(Model.image_url))
+                {
+                    <img src="@Model.image_url" alt="@Model.title" onerror="this.outerHTML='<span class=&quot;text-muted&quot;>Không có ảnh</span>'" />
+                }
+                else
+                {
+                    <span class="text-muted">Không có ảnh</span>
+                }
+            </div>
+        </td>
+        <td>
+            <span class="field-label">Người tạo</span>
+            <div>@Html.DisplayFor(model => model.user.full_name)</div>
+        </td>
+        <td>
+            <span class="field-label">Trạng thái</span>
+            <div>@Html.DisplayFor(model => model.status)</div>
+        </td>
+    </tr>
+
+    <!-- Mô tả -->
+    <tr>
+        <td colspan="3">
+            <span class="field-label">Mô tả</span>
+            <div>@Html.DisplayFor(model => model.description)</div>
+        </td>
+    </tr>
+
+    <!-- Danh sách nguyên liệu -->
+    <tr>
+        <td colspan="3">
+            <span class="field-label">Danh sách nguyên liệu (@(Model.recipe_ingredients != null ? Model.recipe_ingredients.Count : 0))</span>
+            @if (Model.recipe_ingredients != null && Model.recipe_ingredients.Any())
+            {
+                <ul class="mb-0 ps-3">
+                    @foreach (var ri in Model.recipe_ingredients)
+                    {
+                        <li>
+                            <strong>@(ri.ingredient != null ? ri.ingredient.name : "Nguyên liệu")</strong>: 
+                            @(ri.quantity.HasValue ? ri.quantity.Value.ToString("G29") : "") @ri.unit
+                            @if (!string.IsNullOrEmpty(ri.note))
+                            {
+                                <span class="text-muted fst-italic">(@ri.note)</span>
+                            }
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <span class="text-muted fst-italic">Chưa có nguyên liệu</span>
+            }
+        </td>
+    </tr>
+
+    <!-- Các bước nấu ăn -->
+    <tr>
+        <td colspan="3">
+            <span class="field-label">Các bước nấu ăn (@(Model.steps != null ? Model.steps.Count : 0))</span>
+            @if (Model.steps != null && Model.steps.Any())
+            {
+                <ol class="mb-0 ps-3">
+                    @foreach (var st in Model.steps.OrderBy(s => s.step_number))
+                    {
+                        <li class="mb-1">@st.instruction</li>
+                    }
+                </ol>
+            }
+            else
+            {
+                <span class="text-muted fst-italic">Chưa có các bước nấu</span>
+            }
+        </td>
+    </tr>
+</table>

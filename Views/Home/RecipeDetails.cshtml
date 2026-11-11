@@ -1,0 +1,107 @@
+﻿@model Reciper.Models.ViewModel.RecipeDetailsVM
+@{
+    ViewBag.Title = Model.Recipe.title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <link href="~/Content/myStyle/CustomerDetailProduct.css" rel="stylesheet" />
+}
+
+<div class="container-fluid pro">
+    <div class="div-horizontal">
+        @* Khối bên trái: Ảnh món ăn *@
+        <div class="col-md-3 pro-section pro-image text-center">
+            @if (!string.IsNullOrWhiteSpace(Model.Recipe.image_url))
+            {
+                <img src="@Model.Recipe.image_url" alt="@Model.Recipe.title" onerror="this.src='https://via.placeholder.com/250x200?text=Reciper'" />
+            }
+            else
+            {
+                <img src="https://via.placeholder.com/250x200?text=Reciper" alt="@Model.Recipe.title" />
+            }
+        </div>
+
+        @* Khối ở giữa: Thông tin công thức, nguyên liệu, các bước làm *@
+        <div class="col-md-5 pro-section p-3">
+            <div>
+                <h4><strong>@Model.Recipe.title</strong></h4>
+                <p class="mb-1"><strong>Danh mục:</strong> @(Model.Recipe.category != null ? Model.Recipe.category.name : "Khác")</p>
+                <p class="mb-1"><strong>Độ khó:</strong> @Model.Recipe.difficulty</p>
+                <p class="mb-1"><strong>Chuẩn bị:</strong> @Model.Recipe.prep_minutes phút | <strong>Nấu:</strong> @Model.Recipe.cook_minutes phút</p>
+                <p class="mb-1"><strong>Khẩu phần:</strong> @Model.Recipe.servings người</p>
+                <hr />
+                <h5><strong>Mô tả</strong></h5>
+                <p>@Model.Recipe.description</p>
+                <hr />
+
+                <h5><strong>Nguyên liệu cần chuẩn bị</strong> @(Model.Servings > 0 ? $"(cho {Model.Servings} người ăn)" : "")</h5>
+                @if (Model.Recipe.recipe_ingredients != null && Model.Recipe.recipe_ingredients.Any())
+                {
+                    decimal multiplier = (Model.Recipe.servings > 0 && Model.Servings > 0) ? ((decimal)Model.Servings / (decimal)Model.Recipe.servings) : 1m;
+                    <ul class="mb-3">
+                        @foreach (var ing in Model.Recipe.recipe_ingredients)
+                        {
+                            <li class="mb-1">
+                                <strong>@(ing.ingredient != null ? ing.ingredient.name : "Nguyên liệu")</strong>: 
+                                @(ing.quantity.HasValue ? (Math.Round(ing.quantity.Value * multiplier, 2)).ToString("G29") : "") @ing.unit
+                                @if (!string.IsNullOrEmpty(ing.note))
+                                {
+                                    <span class="text-muted fst-italic">(@ing.note)</span>
+                                }
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p class="text-muted fst-italic">Chưa cập nhật nguyên liệu cho món này.</p>
+                }
+                <hr />
+
+                <h5><strong>Các bước thực hiện</strong></h5>
+                @if (Model.Recipe.steps != null && Model.Recipe.steps.Any())
+                {
+                    <ol class="mb-3 ps-3">
+                        @foreach (var s in Model.Recipe.steps.OrderBy(x => x.step_number))
+                        {
+                            <li class="mb-2">@s.instruction</li>
+                        }
+                    </ol>
+                }
+                else
+                {
+                    <p class="text-muted fst-italic">Chưa cập nhật các bước chế biến cho món này.</p>
+                }
+            </div>
+            <hr />
+
+            @* Khối món liên quan *@
+            <div>
+                @Html.Partial("_PVRelatedRecipe", Model)
+            </div>
+        </div>
+
+        @* Khối bên phải: Khẩu phần & Món ăn khác *@
+        <div class="col-md-3 pro-section p-3">
+            <div class="form-group">
+                @using (Html.BeginForm("RecipeDetails", "Home", FormMethod.Get))
+                {
+                    @Html.Hidden("id", Model.Recipe.id)
+                    <h4><strong>Khẩu phần ăn</strong></h4>
+                    <p>
+                        <input type="number" name="servings" value="@Model.Servings" min="1" max="50" class="form-control" onchange="this.form.submit()" />
+                    </p>
+                }
+                <hr />
+            </div>
+
+            @* Khối gợi ý món khác *@
+            <div>
+                @Html.Partial("_PVTopRecipe", Model)
+            </div>
+        </div>
+    </div>
+
+    @* Nút quay lại ở bên dưới *@
+    <div class="mt-4">
+        <a href="@Url.Action("Index", "Home")" class="btn btn-primary">← Quay lại danh sách công thức</a>
+    </div>
+</div>

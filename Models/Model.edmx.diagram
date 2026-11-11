@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="19634133334e4958bd8965e8f135a148" Name="Diagram1">
+        <EntityTypeShape EntityType="ReciperModel.category" Width="1.5" PointX="6.375" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReciperModel.ingredient" Width="1.5" PointX="10" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReciperModel.recipe_ingredients" Width="1.5" PointX="6.375" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReciperModel.recipe" Width="1.5" PointX="3.5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReciperModel.step" Width="1.5" PointX="10" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReciperModel.user" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="ReciperModel.FK__recipes__categor__5DCAEF64" ManuallyRouted="false" />
+        <AssociationConnector Association="ReciperModel.FK__recipe_in__ingre__656C112C" ManuallyRouted="false" />
+        <AssociationConnector Association="ReciperModel.FK__recipe_in__recip__6477ECF3" ManuallyRouted="false" />
+        <AssociationConnector Association="ReciperModel.FK__recipes__user_id__5EBF139D" ManuallyRouted="false" />
+        <AssociationConnector Association="ReciperModel.FK__steps__recipe_id__693CA210" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

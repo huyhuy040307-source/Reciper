@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Reciper Công Thức Nấu Ăn</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+    <style>
+        .navbar-reciper {
+            background-color: #212529 !important;
+            border-bottom: 3px solid #198754;
+        }
+        .navbar-reciper .navbar-brand {
+            font-weight: 800;
+            color: #fff !important;
+            letter-spacing: 0.5px;
+        }
+        .navbar-reciper .navbar-brand span {
+            color: #198754;
+        }
+        .navbar-reciper .nav-link {
+            color: #e0e0e0 !important;
+            font-weight: 500;
+            margin-right: 4px;
+        }
+        .navbar-reciper .nav-link:hover {
+            color: #20c997 !important;
+        }
+        .footer-reciper {
+            background-color: #1c1f23;
+            color: #adb5bd;
+            padding: 40px 0 20px 0;
+            margin-top: 50px;
+        }
+        .footer-reciper h5 {
+            color: #fff;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark navbar-reciper sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fs-4" href="@Url.Action("Index", "Home", new { area = "" })">
+                🍳 RECIPER<span>.VN</span>
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#userNavbar"
+                    title="Toggle navigation" aria-controls="userNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="userNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        @Html.ActionLink("Trang chủ", "Index", "Home", new { area = "" }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Giới thiệu", "About", "Home", new { area = "" }, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Liên hệ", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })
+                    </li>
+                    @if (Session["Role"] != null && Session["Role"].ToString().Trim().Equals("Admin", StringComparison.OrdinalIgnoreCase))
+                    {
+                        <li class="nav-item">
+                            @Html.ActionLink("⚙️ Trang Quản Trị", "Index", "Home", new { area = "Admin" }, new { @class = "nav-link text-warning fw-bold" })
+                        </li>
+                    }
+                </ul>
+                <ul class="navbar-nav">
+                    @if (Session["Username"] == null)
+                    {
+                        <li class="nav-item">
+                            @Html.ActionLink("Đăng nhập", "Login", "Account", new { area = "" }, new { @class = "btn btn-outline-light btn-sm me-2" })
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("Đăng ký", "Register", "Account", new { area = "" }, new { @class = "btn btn-success btn-sm text-white" })
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item d-flex align-items-center">
+                            <span class="text-light me-3 small">👋 Xin chào, <strong>@Session["Username"]</strong></span>
+                            @Html.ActionLink("Đăng xuất", "Logout", "Account", new { area = "" }, new { @class = "btn btn-outline-danger btn-sm" })
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container body-content py-4">
+        @RenderBody()
+    </div>
+
+    <footer class="footer-reciper">
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-md-6">
+                    <h5>🍳 Reciper - Bếp Của Mọi Nhà</h5>
+                    <p class="small text-muted" style="max-width: 450px; line-height: 1.6;">
+                        Nền tảng chia sẻ công thức nấu ăn, mẹo vào bếp và bí quyết ẩm thực phong phú dành cho mọi gia đình Việt.
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h5>Nhóm Phát Triển</h5>
+                    <p class="small text-muted mb-1">Dự án môn học Lập trình Web - Nhóm Công thức nấu ăn</p>
+                    <p class="small text-muted mb-0">Thành viên: Quân • Huy • Long • Khang</p>
+                </div>
+            </div>
+            <div class="border-top border-secondary pt-3 mt-4 text-center small text-muted">
+                &copy; @DateTime.Now.Year Reciper. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
